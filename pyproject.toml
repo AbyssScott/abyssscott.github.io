@@ -1,0 +1,12 @@
+[project]
+name = "abyssscott-portfolio"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel",
+    "pandas",
+    "plotly",
+    "nbformat",
+    "statsmodels",
+    "jupyter-book==2.*",
+]
