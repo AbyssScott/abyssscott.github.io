@@ -8,3 +8,6 @@ lab*.ipynb
 
 # Ignore the local Python virtual environment
 .venv/
+
+# MyST build outputs
+_build
