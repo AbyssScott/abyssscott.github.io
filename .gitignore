@@ -1,0 +1,10 @@
+.DS_Store
+.ipynb_checkpoints/
+_build/
+
+# make sure Labs aren't included
+Lab*.ipynb
+lab*.ipynb
+
+# Ignore the local Python virtual environment
+.venv/
