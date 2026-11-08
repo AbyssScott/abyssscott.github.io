@@ -18,10 +18,12 @@ from collections import Counter
 from datetime import date, datetime
 from pathlib import Path
 
-# Fixed observation cutoff: a reproducible snapshot of games released by this date.
+# Fixed observation cutoff: a reproducible snapshot of games
+# released by this date.
 CUTOFF_DATE = date(2026, 11, 7)
 
-# Game genres (excluding Steam's Indie, Free To Play, and Early Access attributes).
+# Game genres (excluding Steam's Indie, Free To Play, and
+# Early Access attributes).
 GAME_GENRES = {
     "Action",
     "Adventure",
@@ -62,7 +64,8 @@ def main():
     if not source.is_file():
         raise FileNotFoundError(
             f"Cannot find {source}\n"
-            'Put games.csv in Downloads or run: python prepare_data.py "FULL_PATH_TO_GAMES_CSV"'
+            'Put games.csv in Downloads or run: '
+            'python prepare_data.py "FULL_PATH_TO_GAMES_CSV"'
         )
 
     output = base_dir / "data" / "steam_games_clean.csv"
@@ -83,7 +86,9 @@ def main():
             pos = header.index("DiscountDLC count")
             header[pos : pos + 1] = ["Discount", "DLC count"]
         if len(header) != 40:
-            raise ValueError(f"Unexpected header: {len(header)} columns (expected 40)")
+            raise ValueError(
+                f"Unexpected header: {len(header)} columns (expected 40)"
+            )
 
         writer = csv.DictWriter(outfile, fieldnames=COLUMNS)
         writer.writeheader()
@@ -102,14 +107,17 @@ def main():
             seen_appids.add(appid)
 
             name = game["Name"].strip()
-            if re.search(r"\bplaytest\b", name, flags=re.IGNORECASE) or re.search(
-                r"\bdemo$", name, flags=re.IGNORECASE
+            if (
+                re.search(r"\bplaytest\b", name, flags=re.IGNORECASE)
+                or re.search(r"\bdemo$", name, flags=re.IGNORECASE)
             ):
                 counts["playtest_or_demo"] += 1
                 continue
 
             try:
-                released = datetime.strptime(game["Release date"], "%b %d, %Y").date()
+                released = datetime.strptime(
+                    game["Release date"], "%b %d, %Y"
+                ).date()
             except ValueError:
                 counts["invalid_release_date"] += 1
                 continue
@@ -117,7 +125,11 @@ def main():
                 counts["future_release"] += 1
                 continue
 
-            all_genres = [g.strip() for g in game["Genres"].split(",") if g.strip()]
+            all_genres = [
+                g.strip()
+                for g in game["Genres"].split(",")
+                if g.strip()
+            ]
             genres = [g for g in all_genres if g in GAME_GENRES]
             if not genres:
                 counts["no_game_genre"] += 1
